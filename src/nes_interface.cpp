@@ -127,6 +127,7 @@ bool NESInterface::Impl::game_over() {
 
 	// Update game state.
 	remaining_lives = FCEU_CheatGetByte(0x0020);
+	printf("remaining_lives %d", remaining_lives);
 
 	// Return true only if this byte is 1.
 	if (remaining_lives > 0) return false;
