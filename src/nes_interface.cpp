@@ -127,7 +127,6 @@ bool NESInterface::Impl::game_over() {
 
 	// Update game state.
 	remaining_lives = FCEU_CheatGetByte(0x0020);
-	printf("remaining_lives %d", remaining_lives);
 
 	// Return true only if this byte is 1.
 	if (remaining_lives > 0) return false;
@@ -371,9 +370,11 @@ int NESInterface::Impl::act(int action) {
 	// Calculate the change in y
 	int new_x = FCEU_CheatGetByte(0x0066);
 
-	printf("TRACE: new y %d", new_x);
-
-	int deltaX = new_x - current_x;
+	if(episode_frame_number % 100 == 0) {
+		printf("TRACE: y %d lives %d\n", new_x, remaining_lives);
+	}
+	
+	int deltaX = current_x - new_x;
 	deltaX = deltaX * 5;
 
 	// Handle resets of level, etc.
