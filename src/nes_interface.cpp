@@ -130,8 +130,6 @@ bool NESInterface::Impl::game_over() {
 
 	// Return true only if this byte is 1.
 	if (lives > 0) return false;
-
-	printf("GAME over because lives: %d\n", lives);
 	// Reset the score and position.
 	current_game_score = 0;
 	current_x = 0;
@@ -370,9 +368,10 @@ int NESInterface::Impl::act(int action) {
 
 	// Calculate the change in y
 	int new_x = FCEU_CheatGetByte(0x0066);
+	int new_x2 = FCEU_CheatGetByte(0x0064);
 
-	if(false && episode_frame_number % 100 == 0) {
-		printf("TRACE: y %d lives %d\n", new_x, remaining_lives);
+	if(episode_frame_number % 10 == 0) {
+		printf("TRACE: x %d\n", new_x2);
 	}
 	
 	int deltaX = current_x - new_x;
