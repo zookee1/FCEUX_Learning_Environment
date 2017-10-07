@@ -126,10 +126,10 @@ bool NESInterface::Impl::loadState() {
 bool NESInterface::Impl::game_over() {
 
 	// Update game state.
-	game_state = 1; //FCEU_CheatGetByte(0x0770);
+	game_state = FCEU_CheatGetByte(0x0020);
 
 	// Return true only if this byte is 1.
-	if (game_state == 1) return false;
+	if (game_state > 0) return false;
 
 	// Reset the score and position.
 	current_game_score = 0;
