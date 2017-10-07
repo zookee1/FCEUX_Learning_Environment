@@ -365,15 +365,13 @@ int NESInterface::Impl::act(int action) {
 	FCEUD_Update(gfx, sound, ssize);
 
 	// Get score...
-	int new_score = (FCEU_CheatGetByte(0x07dd) * 1000000) +
-			(FCEU_CheatGetByte(0x07de) * 100000) +
-			(FCEU_CheatGetByte(0x07df) * 10000) +
-			(FCEU_CheatGetByte(0x07e0) * 1000) +
-			(FCEU_CheatGetByte(0x07e1) * 100) +
-			(FCEU_CheatGetByte(0x07e2) * 10);
+	int new_score = (FCEU_CheatGetByte(0x0059) * 1000);
 
-	// Calculate the change in x (this is the x position on the screen, not in the level).
+	// Calculate the change in y
 	int new_x = FCEU_CheatGetByte(0x0066);
+
+	printf("TRACE: new y %d", new_x);
+
 	int deltaX = new_x - current_x;
 	deltaX = deltaX * 5;
 
