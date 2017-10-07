@@ -127,10 +127,10 @@ bool NESInterface::Impl::loadState() {
 bool NESInterface::Impl::game_over() {
 
 	// Update game state.
-	int lives = FCEU_CheatGetByte(0x0020);
+	remaining_lives = FCEU_CheatGetByte(0x0020);
 
 	// Return true only if this byte is 1.
-	if (lives > 0) return false;
+	if (remaining_lives > 0) return false;
 	// Reset the score and position.
 	current_game_score = 0;
 	current_x = 0;
@@ -281,7 +281,7 @@ const int NESInterface::Impl::getCurrentScore() const {
 int NESInterface::Impl::act(int action) {
 
 	// Calculate lives.
-	//remaining_lives = FCEU_CheatGetByte(0x0020);
+	remaining_lives = FCEU_CheatGetByte(0x0020);
 
 	// Set the action. No idea whether this will work with other input configurations!
 	switch (action) {
