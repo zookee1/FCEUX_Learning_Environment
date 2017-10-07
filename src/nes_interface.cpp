@@ -126,7 +126,7 @@ bool NESInterface::Impl::loadState() {
 bool NESInterface::Impl::game_over() {
 
 	// Update game state.
-	game_state = FCEU_CheatGetByte(0x0770);
+	game_state = 1; //FCEU_CheatGetByte(0x0770);
 
 	// Return true only if this byte is 1.
 	if (game_state == 1) return false;
