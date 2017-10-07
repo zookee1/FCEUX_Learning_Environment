@@ -101,7 +101,8 @@ class NESInterface::Impl {
         int m_max_num_frames;     // Maximum number of frames for each episode
         int nes_input; // Input to the emulator.
         int current_game_score;
-        int current_x;
+		int current_x;
+		int current_y;
         int remaining_lives;
         int game_state;
         int episode_frame_number;
@@ -133,6 +134,7 @@ bool NESInterface::Impl::game_over() {
 	// Reset the score and position.
 	current_game_score = 0;
 	current_x = 0;
+	current_y = 192;
 	return true;
 }
 
@@ -144,6 +146,7 @@ void NESInterface::Impl::reset_game() {
 	// Initialize the score,position, and frame counter.
 	current_game_score = 0;
 	current_x = 0;
+	current_y = 192;
 	episode_frame_number = 0;
 
 	// Run a few frames first to get to the startup screen.
@@ -367,22 +370,24 @@ int NESInterface::Impl::act(int action) {
 	int new_score = (FCEU_CheatGetByte(0x0059) * 1000);
 
 	// Calculate the change in y
-	int new_x = FCEU_CheatGetByte(0x0066);
-	int new_x2 = FCEU_CheatGetByte(0x0064);
-
-	if(episode_frame_number % 10 == 0) {
-		printf("TRACE: x %d\n", new_x2);
-	}
+	int new_y = FCEU_CheatGetByte(0x0066);
+	int new_x = FCEU_CheatGetByte(0x0064);
 	
-	int deltaX = current_x - new_x;
-	deltaX = deltaX * 5;
+	int deltaX = new_x - current_x;
+	deltaX = deltaX * 1;
+
+
+	int rewardX = 10 - ((10/70) * abs(140/2 - new_x));
+	
+	int deltaY = current_y - new_y;
+	deltaY = deltaY * 10;
 
 	// Handle resets of level, etc.
-	if (abs(deltaX) > MAX_ALLOWED_X_CHANGE) {
-		deltaX = 0;
-		current_x = 0;
+	if (abs(deltaY) > MAX_ALLOWED_X_CHANGE) {
+		deltaY = 0;
+		current_y = 192;
 	} 
-        current_x = new_x;
+        current_y = new_y;
 
 	// Calculate the reward based on score.
 	int reward = new_score - current_game_score;
@@ -395,7 +400,10 @@ int NESInterface::Impl::act(int action) {
 
 	// Add reward based on position.
         // Oh wow - now sure we want to do this :(
-	reward = reward + deltaX;
+	reward = reward + rewardX + deltaY;
+
+
+	printf("TRACE: reward %d x %d y %d (%d)\n", reward, new_x, new_y, rewardX);
 
 	return reward;
 }
@@ -406,6 +414,7 @@ NESInterface::Impl::Impl(const std::string &rom_file) :
 	nes_input(0),
 	current_game_score(0),
 	current_x(0),
+	current_y(0),
 	remaining_lives(0),
 	game_state(0),
 	episode_frame_number(0)
