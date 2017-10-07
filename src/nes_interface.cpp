@@ -407,7 +407,7 @@ int NESInterface::Impl::act(int action) {
 	reward = reward + rewardX + deltaY;
 
 
-	printf("TRACE: x:%d / y:%d /// rewardX %d /// rewardY %d /// reward\n", new_x, new_y, rewardX, deltaY, reward);
+	//printf("TRACE: x:%d / y:%d /// rewardX %d /// rewardY %d /// reward %d\n", new_x, new_y, rewardX, deltaY, reward);
 
 	return reward;
 }
