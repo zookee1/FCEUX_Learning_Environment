@@ -370,14 +370,18 @@ int NESInterface::Impl::act(int action) {
 	int new_score = (FCEU_CheatGetByte(0x0059) * 1000);
 
 	// Calculate the change in y
-	int new_y = FCEU_CheatGetByte(0x0066);
 	int new_x = FCEU_CheatGetByte(0x0064);
+	int new_y = FCEU_CheatGetByte(0x0066);
 	
 	int deltaX = new_x - current_x;
 	deltaX = deltaX * 1;
 
 
-	int rewardX = 10 - ((10/70) * abs(140/2 - new_x));
+	int maxX = 255;
+	float halfX = maxX / 2.0;
+	float middleBonus = 10.0;
+
+	int rewardX = middleBonus - ((middleBonus/halfX) * abs(halfX - (float)new_x));
 	
 	int deltaY = current_y - new_y;
 	deltaY = deltaY * 10;
@@ -403,7 +407,7 @@ int NESInterface::Impl::act(int action) {
 	reward = reward + rewardX + deltaY;
 
 
-	printf("TRACE: reward %d x %d y %d (%d)\n", reward, new_x, new_y, rewardX);
+	printf("TRACE: x:%d / y:%d /// reward %d /// rewardX %d\n", new_x, new_y, reward, rewardX);
 
 	return reward;
 }
