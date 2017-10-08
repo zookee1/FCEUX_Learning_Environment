@@ -376,6 +376,8 @@ int NESInterface::Impl::act(int action) {
 	int deltaX = new_x - current_x;
 	deltaX = deltaX * 1;
 
+	int stock = (192 - new_y) / 48;
+	int stockReward = stock * 200;
 
 	int maxX = 255;
 	float halfX = maxX / 2.0;
@@ -403,11 +405,10 @@ int NESInterface::Impl::act(int action) {
 	current_game_score = new_score;
 
 	// Add reward based on position.
-        // Oh wow - now sure we want to do this :(
-	reward = reward + rewardX + deltaY;
+	reward = reward + rewardX + deltaY + stockReward;
 
 
-	printf("TRACE: x:%d / y:%d /// rewardX %d /// rewardY %d /// reward %d\n", new_x, new_y, rewardX, deltaY, reward);
+	printf("TRACE: x:%d / y:%d /// rewardX %d /// rewardY %d /// stockReward %d\n", new_x, new_y, rewardX, deltaY, stockReward);
 
 	return reward;
 }
