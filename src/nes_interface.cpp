@@ -129,6 +129,10 @@ bool NESInterface::Impl::game_over() {
 	// Update game state.
 	int lives = FCEU_CheatGetByte(0x0020);
 
+	if(lives < 3) {
+		FCEU_CheatSetByte(0x0020, 3);		
+	}
+
 	// Return true only if this byte is 1.
 	if (lives > 0) return false;
 	// Reset the score and position.
