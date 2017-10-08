@@ -135,7 +135,7 @@ bool NESInterface::Impl::game_over() {
 	current_game_score = 0;
 	current_x = 0;
 	current_y = 192;
-	return true;
+	return true; 
 }
 
 void NESInterface::Impl::reset_game() {
@@ -384,7 +384,7 @@ int NESInterface::Impl::act(int action) {
 	int rewardX = middleBonus - ((middleBonus/halfX) * abs(halfX - (float)new_x));
 	
 	int deltaY = current_y - new_y;
-	deltaY = deltaY * 10;
+	deltaY = deltaY * 2;
 
 	// Handle resets of level, etc.
 	if (abs(deltaY) > MAX_ALLOWED_X_CHANGE) {
@@ -407,7 +407,7 @@ int NESInterface::Impl::act(int action) {
 	reward = reward + rewardX + deltaY;
 
 
-	//printf("TRACE: x:%d / y:%d /// rewardX %d /// rewardY %d /// reward %d\n", new_x, new_y, rewardX, deltaY, reward);
+	printf("TRACE: x:%d / y:%d /// rewardX %d /// rewardY %d /// reward %d\n", new_x, new_y, rewardX, deltaY, reward);
 
 	return reward;
 }
