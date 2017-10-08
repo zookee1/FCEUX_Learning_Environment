@@ -376,8 +376,10 @@ int NESInterface::Impl::act(int action) {
 	int deltaX = new_x - current_x;
 	deltaX = deltaX * 1;
 
-	int stock = (192 - new_y) / 48;
-	int stockReward = stock * 200;
+	int new_stock = (192 - new_y) / 48;
+	int current_stock = (192 - current_y) / 48;
+	
+	int stockReward = (new_stock - current_stock) * 200;
 
 	int maxX = 255;
 	float halfX = maxX / 2.0;
